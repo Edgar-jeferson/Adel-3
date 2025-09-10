@@ -1,122 +1,296 @@
-body {
-  font-size: 16px;
+/* CSS Base - mantén tu CSS original y agrega esto */
+
+/* Meta viewport necesario en el HTML */
+/* <meta name="viewport" content="width=device-width, initial-scale=1.0"> */
+
+/* Responsive Design para Móvil */
+
+/* Tablets (768px y menor) */
+@media screen and (max-width: 768px) {
+    #tree-container {
+        padding: 15px;
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
+    #tree-container img {
+        width: 100%;
+        height: auto;
+        max-height: 50vh;
+        object-fit: contain;
+    }
+
+    #dedication-text {
+        font-size: 15px;
+        padding: 18px;
+        margin: 15px auto;
+        max-width: 90%;
+        line-height: 1.6;
+    }
+
+    .signature {
+        font-size: 20px;
+    }
+
+    #countdown {
+        font-size: 15px;
+        padding: 12px 18px;
+        max-width: 90%;
+        margin: 15px auto;
+    }
+
+    #countdown b {
+        font-size: 22px;
+    }
+
+    #music-btn {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    #yt-help-msg {
+        right: 15px;
+        bottom: 70px;
+        max-width: 250px;
+        font-size: 12px;
+        padding: 12px;
+    }
 }
 
-/* --- Árbol principal --- */
-.tree-container {
-  width: 12vw !important;
-  height: 62vw !important;
-  max-width: 98vw;
-  max-height: 80vw;
-  min-width: 180px;
-  min-height: 180px;
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
+/* Móviles (480px y menor) */
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 14px;
+        padding: 0 5px;
+    }
+
+    #tree-container {
+        padding: 10px;
+        max-width: 98%;
+        margin: 5px auto;
+    }
+
+    #tree-container img {
+        max-height: 40vh;
+        border-radius: 12px;
+        width: 100%;
+    }
+
+    #dedication-text {
+        font-size: 14px;
+        padding: 15px;
+        margin: 10px auto;
+        max-width: 95%;
+        border-radius: 12px;
+        line-height: 1.5;
+    }
+
+    .signature {
+        font-size: 18px;
+        margin-top: 12px;
+    }
+
+    #countdown {
+        font-size: 14px;
+        padding: 12px 15px;
+        margin: 10px auto;
+        max-width: 95%;
+        border-radius: 10px;
+    }
+
+    #countdown b {
+        font-size: 20px;
+        margin: 3px 0;
+        display: block;
+    }
+
+    #music-btn {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        border-radius: 20px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    #yt-help-msg {
+        right: 10px;
+        bottom: 60px;
+        max-width: calc(100vw - 40px);
+        font-size: 11px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    /* Pétalos más pequeños en móvil */
+    .floating-petal {
+        width: 8px;
+        height: 8px;
+    }
+
+    .floating-petal:nth-child(even) {
+        width: 6px;
+        height: 6px;
+    }
+
+    .floating-petal:nth-child(3n) {
+        width: 7px;
+        height: 7px;
+    }
+
+    /* Ajustar animación de escala para móvil */
+    .move-and-scale {
+        animation: moveAndScaleMobile 2s ease-out forwards;
+    }
+
+    @keyframes moveAndScaleMobile {
+        0% {
+            transform: scale(1) translateY(0);
+        }
+        100% {
+            transform: scale(1.05) translateY(-10px);
+        }
+    }
 }
 
-.tree-container svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+/* Móviles pequeños (360px y menor) */
+@media screen and (max-width: 360px) {
+    #tree-container {
+        padding: 8px;
+        margin: 3px auto;
+    }
+
+    #dedication-text {
+        font-size: 13px;
+        padding: 12px;
+        line-height: 1.4;
+        margin: 8px auto;
+    }
+
+    .signature {
+        font-size: 16px;
+    }
+
+    #countdown {
+        font-size: 13px;
+        padding: 10px 12px;
+        margin: 8px auto;
+    }
+
+    #countdown b {
+        font-size: 18px;
+    }
+
+    #music-btn {
+        padding: 6px 8px;
+        font-size: 11px;
+        bottom: 8px;
+        right: 8px;
+    }
+
+    #yt-help-msg {
+        font-size: 10px;
+        padding: 8px;
+        bottom: 55px;
+        right: 8px;
+    }
 }
 
-.tree-container svg.move-and-scale {
-  transition: transform 1.2s cubic-bezier(.77,0,.18,1);
-  transform: translateY(60px) scale(1.18); /* en móviles baja un poco */
+/* Orientación horizontal en móvil */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+    #tree-container img {
+        max-height: 30vh;
+    }
+
+    #dedication-text {
+        font-size: 12px;
+        padding: 10px;
+        margin: 8px auto;
+    }
+
+    #countdown {
+        font-size: 12px;
+        padding: 8px 12px;
+        margin: 8px auto;
+    }
+
+    #countdown b {
+        font-size: 16px;
+        margin: 2px 0;
+    }
+
+    .signature {
+        font-size: 14px;
+        margin-top: 8px;
+    }
 }
 
-/* --- Texto de dedicatoria --- */
-.dedication-text {
-  position: absolute;
-  top: 7vw;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 92vw;
-  font-size: 1.05rem;
-  text-align: center;
-  color: #000000;
-  font-family: 'Courier New', Courier, monospace;
-  white-space: pre-line;
-  z-index: 3;
-  opacity: 0;
-  pointer-events: none;
+/* Asegurar que elementos no se salgan de la pantalla */
+@media screen and (max-width: 480px) {
+    * {
+        box-sizing: border-box;
+    }
+    
+    body {
+        overflow-x: hidden;
+        width: 100vw;
+    }
+    
+    #floating-objects {
+        width: 100vw;
+        overflow: hidden;
+    }
 }
 
-/* --- Firma --- */
-.signature {
-  position: static;
-  display: block;
-  margin: 2.2em auto 0 auto;
-  font-size: 1.25rem;
-  color: #e60026;
-  opacity: 0;
-  z-index: 5;
-  white-space: pre;
-  pointer-events: none;
-  transition: opacity 0.7s;
-  text-align: center;
+/* Touch-friendly para botones */
+@media (hover: none) and (pointer: coarse) {
+    #music-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 10px;
+    }
+    
+    #music-btn:active {
+        transform: scale(0.95);
+        background: #e60026;
+        color: white;
+    }
 }
 
-/* --- Cuenta regresiva --- */
-.countdown {
-  position: fixed;
-  left: 50%;
-  bottom: 10vw;
-  transform: translateX(-50%);
-  font-size: 0.98rem;
-  min-width: 60vw;
-  max-width: 92vw;
-  text-align: center;
-  padding: 0.5em 0.7em;
-  border-radius: 1em;
-  background: #fff8;
-  box-shadow: 0 2px 8px #e6002611;
-  z-index: 6;
-  pointer-events: none;
-  letter-spacing: 0.05em;
-  transition: opacity 0.8s cubic-bezier(.77,0,.18,1),
-              transform 0.8s cubic-bezier(.77,0,.18,1);
-  opacity: 0;
-  transform: translateX(-50%) translateY(30px);
+/* Para pantallas muy anchas en móvil (rotar teléfono) */
+@media screen and (min-width: 481px) and (max-width: 768px) and (orientation: landscape) {
+    #tree-container {
+        max-width: 70%;
+    }
+    
+    #dedication-text {
+        max-width: 80%;
+    }
+    
+    #countdown {
+        max-width: 80%;
+    }
 }
 
-.countdown.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* --- Pétalos flotantes --- */
-.floating-petal {
-  width: 13px;
-  height: 18px;
-}
-
-/* --- Ajustes para móviles --- */
-@media (max-width: 700px) {
-  .tree-container {
-    width: 60vw !important;
-    height: 60vw !important;
-    top: 42%; /* sube un poco en móviles */
-  }
-
-  .dedication-text {
-    top: 8%;
-    max-width: 95vw;
-    font-size: 1rem;
-    padding: 0.6em;
-  }
-
-  .signature {
-    margin: 1.5em auto 0 auto;
-    font-size: 1.1rem;
-  }
-
-  .countdown {
-    bottom: 5%;
-    font-size: 0.9rem;
-    min-width: 80vw;
-  }
+/* Ajustes para mejorar legibilidad en pantallas pequeñas */
+@media screen and (max-width: 480px) {
+    .typing::after {
+        animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+    }
+    
+    /* Asegurar que el texto se vea bien */
+    #dedication-text {
+        word-wrap: break-word;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+    }
 }

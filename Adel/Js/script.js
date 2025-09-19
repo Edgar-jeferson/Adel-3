@@ -46,8 +46,41 @@ function loadTreeImage() {
   };
 }
 
+// Variable global para controlar el audio
+let audioInstance = null;
+let musicStarted = false;
+
+// Función para intentar reproducir música automáticamente
+function tryAutoPlay() {
+  if (!audioInstance || musicStarted) return;
+  
+  audioInstance.play().then(() => {
+    console.log('Música iniciada automáticamente');
+    musicStarted = true;
+    updateMusicButton('🔊 Música');
+  }).catch(error => {
+    console.log('Autoplay bloqueado, esperando interacción del usuario');
+    updateMusicButton('▶️ Reproducir Música');
+  });
+}
+
+// Función para manejar cualquier interacción del usuario
+function handleUserInteraction() {
+  if (!musicStarted && audioInstance) {
+    tryAutoPlay();
+  }
+}
+
 // Iniciar la carga de la imagen cuando se carga el DOM
-document.addEventListener('DOMContentLoaded', loadTreeImage);
+document.addEventListener('DOMContentLoaded', function() {
+  loadTreeImage();
+  
+  // Agregar listeners para detectar cualquier interacción del usuario
+  document.addEventListener('click', handleUserInteraction, { once: true });
+  document.addEventListener('touchstart', handleUserInteraction, { once: true });
+  document.addEventListener('keydown', handleUserInteraction, { once: true });
+  document.addEventListener('scroll', handleUserInteraction, { once: true });
+});
 
 // Efecto máquina de escribir para el texto de dedicatoria (seguidores)
 function getURLParam(name) {
@@ -59,7 +92,8 @@ function showDedicationText() { //seguidores
   let text = getURLParam('text');
   if (!text) {
    if (true) {
-    text = `Adel:\n\nDesde que llegaste a mi vida, todo se siente más bonito y lo dias dificiles ya no son tan pesados. \n\nSiempre lo supe que eres mi hilo rojo, en un principo no sabia porque la vida te puso en mi camino, ahora lo se, es para amarte muuucho a pesar de este un poco rayadita del coco.  \n\n Te amo mas de lo que puedes imaginar, te amo mucho muchote <3`;  
+    text = `Adel🐝:\n\nTe amé más de lo que pudiste imaginar y por ello tambien eres libre de tomar cualquier decisión. \n\nSi algún día me extrañas, solo activa la "bati-señal" y te llevaré conmigo a descubir el mundo y veras como yo veo la vida... eso sí, no lo hagas cuando ya sea demasiado tarde.\n\nYo por el momento estare en busca de nuevas anecdotas y tratando de dejar mi marca en el mundo...\n\n P.D. paquito puede ir si ayuda a conquitar el mundo`;
+  
 } else {
     text = decodeURIComponent(text).replace(/\\n/g, '\n');
 }
@@ -92,7 +126,7 @@ function showSignature() {
     dedication.appendChild(signature);
   }
   let firma = getURLParam('firma');
-  signature.textContent = firma ? decodeURIComponent(firma) : "Con amor, Edgar <3";
+  signature.textContent = firma ? decodeURIComponent(firma) : "❤️";
   signature.classList.add('visible');
 }
 
@@ -130,25 +164,22 @@ function startFloatingObjects() {
   spawn();
 }
 
-// Cuenta regresiva modificada - Solo muestra días juntos
-function showCountdown() {
-  const container = document.getElementById('countdown');
-  
-  function update() {
-    // Valor fijo de 124 días
-    let days = 124;
 
-    container.innerHTML = `Llevamos juntos: <b>${days}</b> días<br>Feliz 5 meses amor de mi vida`;
-    container.classList.add('visible');
+// Función auxiliar para actualizar el botón de música
+function updateMusicButton(text) {
+  const btn = document.getElementById('music-btn');
+  if (btn) {
+    btn.textContent = text;
   }
-  update();
-  setInterval(update, 1000);
 }
 
-// --- Música de fondo ---
+// --- Música de fondo mejorada ---
 function playBackgroundMusic() {
   const audio = document.getElementById('bg-music');
   if (!audio) return;
+
+  // Guardar referencia global
+  audioInstance = audio;
 
   // --- Opción archivo local por parámetro 'musica' ---
   let musicaParam = getURLParam('musica');
@@ -170,7 +201,7 @@ function playBackgroundMusic() {
       helpMsg.style.right = '18px';
       helpMsg.style.bottom = '180px';
       helpMsg.style.background = 'rgba(255,255,255,0.95)';
-      helpMsg.style.color = '#e60026';
+      helpMsg.style.color = '#0e0d0dff';
       helpMsg.style.padding = '10px 16px';
       helpMsg.style.borderRadius = '12px';
       helpMsg.style.boxShadow = '0 2px 8px #e6002633';
@@ -182,6 +213,7 @@ function playBackgroundMusic() {
     }
   }
 
+  // Crear botón de música
   let btn = document.getElementById('music-btn');
   if (!btn) {
     btn = document.createElement('button');
@@ -197,29 +229,76 @@ function playBackgroundMusic() {
     btn.style.padding = '10px 18px';
     btn.style.fontSize = '1.1em';
     btn.style.cursor = 'pointer';
+    btn.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+    btn.style.transition = 'all 0.3s ease';
     document.body.appendChild(btn);
   }
+
+  // Configurar audio
   audio.volume = 0.7;
   audio.loop = true;
-  // Intentar reproducir inmediatamente
-  audio.play().then(() => {
-    btn.textContent = '🔊 Música';
-  }).catch(() => {
-    // Si falla el autoplay, esperar click en el botón
-    btn.textContent = '▶️ Música';
+  audio.preload = 'auto';
+
+  // Manejar eventos del audio
+  audio.addEventListener('loadeddata', () => {
+    console.log('Audio cargado, intentando reproducir automáticamente...');
+    tryAutoPlay();
   });
+
+  audio.addEventListener('canplay', () => {
+    if (!musicStarted) {
+      tryAutoPlay();
+    }
+  });
+
+  // Intentar reproducir inmediatamente si el audio ya está listo
+  if (audio.readyState >= 3) { // HAVE_FUTURE_DATA
+    tryAutoPlay();
+  }
+
+  // Botón de control manual
   btn.onclick = () => {
     if (audio.paused) {
-      audio.play();
-      btn.textContent = '🔊 Música';
+      audio.play().then(() => {
+        musicStarted = true;
+        updateMusicButton('🔊 Música');
+      }).catch(error => {
+        console.error('Error al reproducir:', error);
+        updateMusicButton('❌ Error');
+      });
     } else {
       audio.pause();
-      btn.textContent = '🔈 Música';
+      updateMusicButton('▶️ Reproducir');
     }
   };
+
+  // Intentar reproducir con diferentes estrategias
+  setTimeout(() => {
+    if (!musicStarted) {
+      tryAutoPlay();
+    }
+  }, 500);
+
+  setTimeout(() => {
+    if (!musicStarted) {
+      tryAutoPlay();
+    }
+  }, 2000);
 }
 
-// Intentar reproducir la música lo antes posible (al cargar la página)
+// Intentar reproducir la música lo antes posible
 window.addEventListener('DOMContentLoaded', () => {
-  playBackgroundMusic();
+  // Configurar audio inmediatamente
+  setTimeout(playBackgroundMusic, 100);
 });
+
+// También intentar cuando la página esté completamente cargada
+window.addEventListener('load', () => {
+  if (!musicStarted && audioInstance) {
+    tryAutoPlay();
+  }
+});
+
+// Intentar reproducir después de cualquier animación o interacción
+document.addEventListener('animationend', handleUserInteraction);
+document.addEventListener('transitionend', handleUserInteraction);

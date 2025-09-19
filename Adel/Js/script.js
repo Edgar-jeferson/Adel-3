@@ -92,7 +92,7 @@ function showDedicationText() { //seguidores
   let text = getURLParam('text');
   if (!text) {
    if (true) {
-    text = `Adel🐝:\n\nTe amé más de lo que pudiste imaginar y por ello tambien eres libre de tomar cualquier decisión. \n\nSi algún día me extrañas, solo activa la "bati-señal" y te llevaré conmigo a descubir el mundo y veras como yo veo la vida... eso sí, no lo hagas cuando ya sea demasiado tarde.\n\nYo por el momento estare en busca de nuevas anecdotas y tratando de dejar mi marca en el mundo...\n\n P.D. paquito puede ir si ayuda a conquitar el mundo`;
+    text = `Adel🐝:\n\nTe amé más de lo que pudiste imaginar y por ello tambien eres libre de tomar cualquier decisión. \n\nSi algún día me extrañas, solo activa la "bati-señal" y te llevaré conmigo a descubrir el mundo y veras como yo veo la vida... eso sí, no lo hagas cuando ya sea demasiado tarde.\n\nYo por el momento estare en busca de nuevas anecdotas y tratando de dejar mi marca en el mundo...\n\n P.D. paquito puede ir si ayuda a conquitar el mundo`;
   
 } else {
     text = decodeURIComponent(text).replace(/\\n/g, '\n');
